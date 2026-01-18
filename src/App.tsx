@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import Table from "./table.tsx";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [data, setData] = useState({});
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const [error, setError] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState<Boolean>(false);
+  const [isLoading, setLoading] = useState<Boolean>(true);
 
   const API = (page: number) =>
     `https://api.artic.edu/api/v1/artworks?page=${page}`;
@@ -18,10 +19,10 @@ function App() {
         const res = await fetch(API(currentPage));
         if (!res.ok) throw new Error("Request failed");
         const data = await res.json();
-        setProducts(data.data);
+        setData(data);
       } catch (err) {
         console.error(err);
-        setError(err);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -30,24 +31,22 @@ function App() {
     fetchData();
   }, [currentPage]);
 
-  const columns = [
-    { field: "title", header: "Code" },
-    { field: "place_of_origin", header: "Name" },
-    { field: "artist_display", header: "Category" },
-    { field: "inscriptions", header: "Quantity" },
-  ];
-
-  //	<Table data = {products} columns= {columns}/>
   if (isLoading) {
-    return <p>Spinner</p>;
+    return <ProgressSpinner style={{ width: "100vw", height: "100vh" }} />;
   }
 
   if (error) {
-    return <p>Error while fetching data:{error.message}</p>;
+    return <p>Error while fetching data</p>;
   }
   return (
     <>
-      <div>{JSON.stringify(products)}</div>
+      {/* {JSON.stringify(data)} */}
+      <Table
+        body={data.data}
+        footer={data.pagination}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </>
   );
 }
