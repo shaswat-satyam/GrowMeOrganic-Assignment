@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import Table from "./table.tsx";
 import { ProgressSpinner } from "primereact/progressspinner";
 
+import type { Root } from "../types.ts";
+
 function App() {
-  const [data, setData] = useState({});
+  const [data, setData] = useState<Root>();
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const [error, setError] = useState<Boolean>(false);
@@ -31,7 +33,7 @@ function App() {
     fetchData();
   }, [currentPage]);
 
-  if (isLoading) {
+  if (isLoading || typeof data == "undefined") {
     return <ProgressSpinner style={{ width: "100vw", height: "100vh" }} />;
   }
 

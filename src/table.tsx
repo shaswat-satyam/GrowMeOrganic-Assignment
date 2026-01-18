@@ -2,14 +2,20 @@
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 // import { InputSwitch } from "primereact/inputswitch";
-import { Button } from "primereact/button";
-import { ButtonGroup } from "primereact/buttongroup";
+import Footer from "./footer.tsx";
+
+import type { Pagination, DataItem } from "../types.ts";
+
+import type { Dispatch, SetStateAction } from "react";
+interface TableProps {
+  body: DataItem[];
+  footer: Pagination;
+  currentPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+}
 
 // const [rowClick, setRowClick] = useState(false);
 // const [selectedProducts, setSelectedProducts] = useState([]);
-let dataToFooter = (start: number, end: number, total: number) =>
-  `Showing ${start} to ${end} of ${total} entries`;
-
 // let addToSelectedProducts = (target) => {
 //   let result = selectedProducts;
 //   result.append(target.id);
@@ -19,9 +25,9 @@ let dataToFooter = (start: number, end: number, total: number) =>
 export default function Table({
   body,
   footer,
-  currentPage:,
-  setCurrentPage: ,
-}) {
+  currentPage,
+  setCurrentPage,
+}: TableProps) {
   return (
     <>
       {/* <InputSwitch checked={rowClick} onChange={(e) => setRowClick(e.value)} /> */}
@@ -36,59 +42,11 @@ export default function Table({
         // onSelectionChange={(e) => addToSelectedProducts(e.value)}
         dataKey="id"
         footer={
-          <div>
-            <p>
-              {dataToFooter(
-                footer.offset + 1,
-                footer.offset + footer.limit,
-                footer.total,
-              )}
-            </p>
-            <div>
-              <Button
-                size="small"
-                outlined={true}
-                label="Previous"
-                disabled={currentPage == 1}
-                onClick={(_) => setCurrentPage(currentPage - 1)}
-              />
-              <Button
-                size="small"
-                outlined={currentPage != currentPage}
-                label={currentPage}
-              />
-              <Button
-                size="small"
-                outlined={currentPage + 1 != currentPage}
-                label={currentPage + 1}
-              />
-              <Button
-                size="small"
-                outlined={currentPage + 1 != currentPage}
-                label={currentPage + 2}
-                onClick={(_) => setCurrentPage(currentPage + 2)}
-              />
-              <Button
-                size="small"
-                outlined={currentPage + 3 != currentPage}
-                label={currentPage + 3}
-                onClick={(_) => setCurrentPage(currentPage + 3)}
-              />
-              <Button
-                size="small"
-                outlined={currentPage + 3 != currentPage}
-                label={currentPage + 4}
-                onClick={(_) => setCurrentPage(currentPage + 3)}
-              />
-              <Button
-                size="small"
-                outlined={true}
-                label="Next"
-                disabled={currentPage == footer.total_pages}
-                onClick={(_) => setCurrentPage(currentPage + 1)}
-              />
-            </div>
-          </div>
+          <Footer
+            footer={footer}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         }
       >
         <Column selectionMode="multiple" />
