@@ -18,7 +18,7 @@ export default function Footer({
   return (
     <div style={{ display: "flex", justifyContent: "Space-between" }}>
       <p>
-        Showing <b>{footer.offset}</b> to{" "}
+        Showing <b>{footer.offset + 1}</b> to{" "}
         <b>{footer.limit * footer.current_page}</b> of <b>{footer.total}</b>{" "}
         entries
       </p>

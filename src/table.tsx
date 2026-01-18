@@ -34,7 +34,7 @@ export default function Table({
       <DataTable
         value={body}
         stripedRows
-        tableStyle={{ minWidth: "50rem" }}
+        tableStyle={{ maxWidth: "100%" }}
         // selectionMode={rowClick ? null : "checkbox"}
         // selection={selectedProducts}
         // onSelectionChange={(e) => addToSelectedProducts(e.value)}
@@ -48,10 +48,24 @@ export default function Table({
         }
       >
         <Column selectionMode="multiple" />
-        <Column field="title" header="TITLE"></Column>
-        <Column field="place_of_origin" header="PLACE_OF_ORIGIN"></Column>
-        <Column field="artist_display" header="ARTIST"></Column>
-        <Column field="inscriptions" header="INSCRIPTIONS"></Column>
+        <Column
+          style={{ fontWeight: "bold", width: "25%" }}
+          field="title"
+          header="TITLE"
+        ></Column>
+        <Column field="place_of_origin" header="PLACE OF ORIGIN"></Column>
+        <Column style={{}} field="artist_display" header="ARTIST"></Column>
+        <Column
+          body={(row) =>
+            typeof row.inscriptions == "string" ? (
+              <div>{row.inscriptions}</div>
+            ) : (
+              <div>N/A</div>
+            )
+          }
+          field="inscriptions"
+          header="INSCRIPTIONS"
+        ></Column>
         <Column field="date_start" header="START DATE"></Column>
         <Column field="date_end" header="END DATE"></Column>
       </DataTable>

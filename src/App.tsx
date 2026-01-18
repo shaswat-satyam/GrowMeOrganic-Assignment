@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Table from "./table.tsx";
+import "./App.css";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 import type { Root } from "../types.ts";
