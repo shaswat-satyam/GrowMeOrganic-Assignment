@@ -31,8 +31,6 @@ export default function Table({
   return (
     <>
       {/* <InputSwitch checked={rowClick} onChange={(e) => setRowClick(e.value)} /> */}
-      {/* {JSON.stringify(data)} */}
-      {/* {JSON.stringify(footer)} */}
       <DataTable
         value={body}
         stripedRows

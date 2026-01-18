@@ -1,4 +1,6 @@
 import { Button } from "primereact/button";
+import GroupButton from "./GroupButton.tsx";
+
 import type { Pagination } from "../types.ts";
 
 import type { Dispatch, SetStateAction } from "react";
@@ -8,22 +10,17 @@ interface footerProps {
   setCurrentPage: Dispatch<SetStateAction<number>>;
 }
 
-let dataToFooter = (start: number, end: number, total: number) =>
-  `Showing ${start} to ${end} of ${total} entries`;
-
 export default function Footer({
   footer,
   currentPage,
   setCurrentPage,
 }: footerProps) {
   return (
-    <div>
+    <div style={{ display: "flex", justifyContent: "Space-between" }}>
       <p>
-        {dataToFooter(
-          footer.offset + 1,
-          footer.offset + footer.limit,
-          footer.total,
-        )}
+        Showing <b>{footer.offset}</b> to{" "}
+        <b>{footer.limit * footer.current_page}</b> of <b>{footer.total}</b>{" "}
+        entries
       </p>
       <div>
         <Button
@@ -33,34 +30,38 @@ export default function Footer({
           disabled={currentPage == 1}
           onClick={(_) => setCurrentPage(currentPage - 1)}
         />
-        <Button
-          size="small"
-          outlined={currentPage != currentPage}
-          label={currentPage.toString()}
-        />
-        <Button
-          size="small"
-          outlined={currentPage + 1 != currentPage}
-          label={(currentPage + 1).toString()}
-        />
-        <Button
-          size="small"
-          outlined={currentPage + 1 != currentPage}
-          label={(currentPage + 2).toString()}
-          onClick={(_) => setCurrentPage(currentPage + 2)}
-        />
-        <Button
-          size="small"
-          outlined={currentPage + 3 != currentPage}
-          label={(currentPage + 3).toString()}
-          onClick={(_) => setCurrentPage(currentPage + 3)}
-        />
-        <Button
-          size="small"
-          outlined={currentPage + 3 != currentPage}
-          label={(currentPage + 4).toString()}
-          onClick={(_) => setCurrentPage(currentPage + 3)}
-        />
+        <>
+          <GroupButton
+            index={1}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            lastPage={footer.total_pages}
+          />
+          <GroupButton
+            index={2}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            lastPage={footer.total_pages}
+          />
+          <GroupButton
+            index={3}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            lastPage={footer.total_pages}
+          />
+          <GroupButton
+            index={4}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            lastPage={footer.total_pages}
+          />
+          <GroupButton
+            index={5}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            lastPage={footer.total_pages}
+          />
+        </>
         <Button
           size="small"
           outlined={true}
