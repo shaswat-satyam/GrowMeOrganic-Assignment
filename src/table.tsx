@@ -8,14 +8,13 @@ import Header from "./header.tsx";
 import type { Pagination, DataItem } from "../types.ts";
 import type { Dispatch, SetStateAction } from "react";
 
-type Item = {};
 interface TableProps {
   body: DataItem[];
   footer: Pagination;
   currentPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   selectedItems: DataItem[];
-  setSelectedItems: Dispatch<SetStateAction<Item>>;
+  setSelectedItems: Dispatch<SetStateAction<DataItem[]>>;
   toBeAdded: number;
   setToBeAdded: Dispatch<SetStateAction<number>>;
 }
@@ -58,6 +57,7 @@ export default function Table({
         stripedRows
         tableStyle={{ maxWidth: "100%" }}
         selection={selectedItems}
+        selectionMode="multiple"
         onSelectionChange={(e) => setSelectedItems(e.value)}
         dataKey="id"
         footer={
