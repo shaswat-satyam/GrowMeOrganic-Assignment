@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
-import Table from "./table.tsx";
 import "./App.css";
+import "primeicons/primeicons.css";
+
+import { useState, useEffect } from "react";
 import { ProgressSpinner } from "primereact/progressspinner";
 
-import type { Root } from "../types.ts";
+import Table from "./table.tsx";
+
+import type { DataItem, Root } from "../types.ts";
 
 function App() {
   const [data, setData] = useState<Root>();
@@ -11,6 +14,9 @@ function App() {
 
   const [error, setError] = useState<Boolean>(false);
   const [isLoading, setLoading] = useState<Boolean>(true);
+
+  const [selectedItems, setSelectedItems] = useState<DataItem[]>([]);
+  const [toBeAdded, setToBeAdded] = useState<number>(0);
 
   const API = (page: number) =>
     `https://api.artic.edu/api/v1/artworks?page=${page}`;
@@ -41,14 +47,21 @@ function App() {
   if (error) {
     return <p>Error while fetching data</p>;
   }
+
   return (
     <>
-      {/* {JSON.stringify(data)} */}
+      <div>
+        Selected: <b>{selectedItems.length + toBeAdded}</b> rows
+      </div>
       <Table
         body={data.data}
         footer={data.pagination}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+        toBeAdded={toBeAdded}
+        setToBeAdded={setToBeAdded}
       />
     </>
   );

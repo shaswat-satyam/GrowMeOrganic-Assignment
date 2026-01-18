@@ -1,43 +1,64 @@
-// import { useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-// import { InputSwitch } from "primereact/inputswitch";
+import { useEffect } from "react";
+
 import Footer from "./footer.tsx";
+import Header from "./header.tsx";
 
 import type { Pagination, DataItem } from "../types.ts";
-
 import type { Dispatch, SetStateAction } from "react";
+
+type Item = {};
 interface TableProps {
   body: DataItem[];
   footer: Pagination;
   currentPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
+  selectedItems: DataItem[];
+  setSelectedItems: Dispatch<SetStateAction<Item>>;
+  toBeAdded: number;
+  setToBeAdded: Dispatch<SetStateAction<number>>;
 }
 
-// const [rowClick, setRowClick] = useState(false);
-// const [selectedProducts, setSelectedProducts] = useState([]);
-// let addToSelectedProducts = (target) => {
-//   let result = selectedProducts;
-//   result.append(target.id);
-//   setSelectedProducts(result);
-// };
+const ItemsNotSelect = (selectedItems: DataItem[], AllItems: DataItem[]) => {
+  const selectedItemSet = new Set(selectedItems.map((item) => item.id));
+  return AllItems.filter((item) => !selectedItemSet.has(item.id));
+};
 
 export default function Table({
   body,
   footer,
   currentPage,
   setCurrentPage,
+  selectedItems,
+  setSelectedItems,
+  toBeAdded,
+  setToBeAdded,
 }: TableProps) {
+  useEffect(() => {
+    if (toBeAdded > 0) {
+      let ItemsNotSelected = ItemsNotSelect(selectedItems, body);
+      if (toBeAdded >= ItemsNotSelected.length) {
+        setToBeAdded(toBeAdded - ItemsNotSelected.length);
+        setSelectedItems([...selectedItems, ...ItemsNotSelected]);
+      } else {
+        setSelectedItems([
+          ...selectedItems,
+          ...ItemsNotSelected.slice(0, toBeAdded),
+        ]);
+        setToBeAdded(0);
+      }
+    }
+  }, [body]);
+
   return (
     <>
-      {/* <InputSwitch checked={rowClick} onChange={(e) => setRowClick(e.value)} /> */}
       <DataTable
         value={body}
         stripedRows
         tableStyle={{ maxWidth: "100%" }}
-        // selectionMode={rowClick ? null : "checkbox"}
-        // selection={selectedProducts}
-        // onSelectionChange={(e) => addToSelectedProducts(e.value)}
+        selection={selectedItems}
+        onSelectionChange={(e) => setSelectedItems(e.value)}
         dataKey="id"
         footer={
           <Footer
@@ -47,7 +68,18 @@ export default function Table({
           />
         }
       >
-        <Column selectionMode="multiple" />
+        <Column
+          selectionMode="multiple"
+          header={
+            <Header
+              selectedItems={selectedItems}
+              setSelectedItems={setSelectedItems}
+              toBeAdded={toBeAdded}
+              setToBeAdded={setToBeAdded}
+              body={body}
+            />
+          }
+        />
         <Column
           style={{ fontWeight: "bold", width: "25%" }}
           field="title"
