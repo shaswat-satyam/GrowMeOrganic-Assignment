@@ -11,10 +11,14 @@
   in {
     devShells.${system}.default = pkgs.mkShell {
       packages = with pkgs; [ 
-        hello
+	nodejs_20
+	git
+	vite
       ];
       shellHook = '' 
-        ${pkgs.hello}/bin/hello
+       echo "Staring the Dev Env"
+       node -v
+       npm -v
       '';
     };
   };
