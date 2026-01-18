@@ -1,33 +1,55 @@
-import { useState } from 'react'
-import { Button } from 'primereact/button';
+import { useState, useEffect } from "react";
+import Table from "./table.tsx";
 
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+function App() {
+  const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-function App() { const [count, setCount] = useState(0)
-  const products = [
-	  {"code":1, "name":"Hello", "category":"game", "quantity":5},
-	  {"code":1, "name":"Hello", "category":"game", "quantity":5},
-	  {"code":1, "name":"Hello", "category":"game", "quantity":5},
-  ]
+  const [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(true);
+
+  const API = (page: number) =>
+    `https://api.artic.edu/api/v1/artworks?page=${page}`;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(API(currentPage));
+        if (!res.ok) throw new Error("Request failed");
+        const data = await res.json();
+        setProducts(data.data);
+      } catch (err) {
+        console.error(err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [currentPage]);
 
   const columns = [
-	  {"field":"code","header":"Code"},
-	  {"field":"name","header":"Name"},
-	  {"field":"category","header":"Category"},
-	  {"field":"quantity","header":"Quantity"},
+    { field: "title", header: "Code" },
+    { field: "place_of_origin", header: "Name" },
+    { field: "artist_display", header: "Category" },
+    { field: "inscriptions", header: "Quantity" },
   ];
+
+  //	<Table data = {products} columns= {columns}/>
+  if (isLoading) {
+    return <p>Spinner</p>;
+  }
+
+  if (error) {
+    return <p>Error while fetching data:{error.message}</p>;
+  }
   return (
     <>
-	<div>
-	    <DataTable value={products} stripedRows tableStyle = {{minWidth: '50rem'}}>
-	    {columns.map((col, i) => (
-		    <Column key={col.field} field={col.field} header = {col.header}/>
-	    ))}
-	    </DataTable>
-	</div>
+      <div>{JSON.stringify(products)}</div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
