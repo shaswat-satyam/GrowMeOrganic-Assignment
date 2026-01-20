@@ -1,10 +1,10 @@
 import { useState, useRef } from "react";
 import { Button } from "primereact/button";
 import { OverlayPanel } from "primereact/overlaypanel";
+import { InputText } from "primereact/inputtext";
 
 import type { DataItem } from "../types";
 import type { Dispatch, SetStateAction } from "react";
-import { InputText } from "primereact/inputtext";
 
 interface HeaderProps {
   selectedItems: DataItem[];

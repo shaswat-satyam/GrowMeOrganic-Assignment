@@ -2,8 +2,8 @@ import { Button } from "primereact/button";
 import GroupButton from "./GroupButton.tsx";
 
 import type { Pagination } from "../types.ts";
-
 import type { Dispatch, SetStateAction } from "react";
+
 interface footerProps {
   footer: Pagination;
   currentPage: number;

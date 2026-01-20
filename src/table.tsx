@@ -34,6 +34,7 @@ export default function Table({
   toBeAdded,
   setToBeAdded,
 }: TableProps) {
+  // Use Effect to reconcile tobeAdded Items
   useEffect(() => {
     if (toBeAdded > 0) {
       let ItemsNotSelected = ItemsNotSelect(selectedItems, body);
@@ -53,6 +54,7 @@ export default function Table({
   return (
     <>
       <DataTable
+        // Table to hold the data with all the relevant columns
         value={body}
         stripedRows
         tableStyle={{ maxWidth: "100%" }}
@@ -88,6 +90,7 @@ export default function Table({
         <Column field="place_of_origin" header="PLACE OF ORIGIN"></Column>
         <Column style={{}} field="artist_display" header="ARTIST"></Column>
         <Column
+          // To Give a default placeholder when no data is Available.
           body={(row) =>
             typeof row.inscriptions == "string" ? (
               <div>{row.inscriptions}</div>
