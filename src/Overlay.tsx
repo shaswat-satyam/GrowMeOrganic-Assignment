@@ -6,7 +6,7 @@ import { InputText } from "primereact/inputtext";
 import type { DataItem } from "../types";
 import type { Dispatch, SetStateAction } from "react";
 
-interface HeaderProps {
+interface OverlayProps {
   selectedItemsIds: number[];
   setSelectedItemsIds: Dispatch<SetStateAction<number[]>>;
   setNumberOfItemsYetToBeAdded: Dispatch<SetStateAction<number>>;
@@ -27,7 +27,7 @@ export default function Overlay({
   numberOfItemsYetToBeAdded,
   setNumberOfItemsYetToBeAdded,
   dataItemsInTableBody,
-}: HeaderProps) {
+}: OverlayProps) {
   const overlayRef = useRef<OverlayPanel | null>(null);
   const [value, setValue] = useState(0);
   return (

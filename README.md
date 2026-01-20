@@ -57,9 +57,6 @@ The basic flow of the code is
 
 ## Future Scope
 
-- We can optimise the selectedItems state such that we only hold the id.
-- We can add some caching to the fetching.
-- We can rename few states and few files to be more succinct.
 - We can add some CSS to handle author data and others.
 - We can add options on how to reconile this toBeSelected number of items and selectedItems.
   Currently we use the first in ascending order in the API payload.

@@ -1,5 +1,5 @@
 import { Button } from "primereact/button";
-import GroupButton from "./GroupButton.tsx";
+import NumberedPaginationButton from "./NumberedPaginationButton.tsx";
 
 import type { Pagination } from "../types.ts";
 import type { Dispatch, SetStateAction } from "react";
@@ -31,31 +31,31 @@ export default function PaginationFooter({
           onClick={(_) => setCurrentPageNumber(currentPageNumber - 1)}
         />
         <>
-          <GroupButton
+          <NumberedPaginationButton
             index={1}
             currentPageNumber={currentPageNumber}
             setCurrentPageNumber={setCurrentPageNumber}
             lastPageNumber={paginationData.total_pages}
           />
-          <GroupButton
+          <NumberedPaginationButton
             index={2}
             currentPageNumber={currentPageNumber}
             setCurrentPageNumber={setCurrentPageNumber}
             lastPageNumber={paginationData.total_pages}
           />
-          <GroupButton
+          <NumberedPaginationButton
             index={3}
             currentPageNumber={currentPageNumber}
             setCurrentPageNumber={setCurrentPageNumber}
             lastPageNumber={paginationData.total_pages}
           />
-          <GroupButton
+          <NumberedPaginationButton
             index={4}
             currentPageNumber={currentPageNumber}
             setCurrentPageNumber={setCurrentPageNumber}
             lastPageNumber={paginationData.total_pages}
           />
-          <GroupButton
+          <NumberedPaginationButton
             index={5}
             currentPageNumber={currentPageNumber}
             setCurrentPageNumber={setCurrentPageNumber}

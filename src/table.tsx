@@ -2,8 +2,8 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useEffect } from "react";
 
-import Overlay from "./header.tsx";
-import PaginationFooter from "./footer.tsx";
+import Overlay from "./Overlay.tsx";
+import PaginationFooter from "./paginationFooter.tsx";
 
 import type { Pagination, DataItem } from "../types.ts";
 import type { Dispatch, SetStateAction } from "react";

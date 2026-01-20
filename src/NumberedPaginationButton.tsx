@@ -1,7 +1,7 @@
 import { Button } from "primereact/button";
 import type { Dispatch, SetStateAction } from "react";
 
-interface GroupButtonInterface {
+interface NumberedPaginationButton {
   index: number;
   currentPageNumber: number;
   lastPageNumber: number;
@@ -24,12 +24,12 @@ const isOutlined = (currentPage: number, index: number, lastPage: number) => {
   return getLabel(currentPage, index, lastPage) != currentPage;
 };
 
-export default function GroupButton({
+export default function NumberedPaginationButton({
   index,
   currentPageNumber,
   lastPageNumber,
   setCurrentPageNumber,
-}: GroupButtonInterface) {
+}: NumberedPaginationButton) {
   return (
     <Button
       size="small"

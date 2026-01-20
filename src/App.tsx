@@ -6,13 +6,13 @@ import { ProgressSpinner } from "primereact/progressspinner";
 
 import Table from "./table.tsx";
 
-import type { DataItem, Root, SelectedId } from "../types.ts";
+import type { Cache, Root, SelectedId } from "../types.ts";
 
 function App() {
   // State to manage the Current Page Data from API
   const [data, setData] = useState<Root>();
   // State to handle the current Page.
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
 
   // State to handle loading or error for the data fetching
   const [error, setError] = useState<Boolean>(false);
@@ -27,14 +27,24 @@ function App() {
     `https://api.artic.edu/api/v1/artworks?page=${page}`;
 
   // To fetch data for every page change.
+  const [cache, setCache] = useState<Cache>({});
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(API(currentPage));
-        if (!res.ok) throw new Error("Request failed");
-        const data = await res.json();
-        setData(data);
+        if (Object.hasOwn(cache, currentPageNumber)) {
+          setData(cache[currentPageNumber]);
+        } else {
+          const res = await fetch(API(currentPageNumber));
+          if (!res.ok) throw new Error("Request failed");
+          const data = await res.json();
+          setCache((prevCache) => ({
+            ...prevCache,
+            [currentPageNumber]: data,
+          }));
+          setData(data);
+        }
       } catch (err) {
         console.error(err);
         setError(true);
@@ -44,7 +54,7 @@ function App() {
     };
 
     fetchData();
-  }, [currentPage]);
+  }, [currentPageNumber]);
 
   // To show a spinner when data is loading or data is undefined
   if (isLoading || typeof data == "undefined") {
@@ -65,8 +75,8 @@ function App() {
       <Table
         dataItemsInTableBody={data.data}
         PaginationData={data.pagination}
-        currentPageNumber={currentPage}
-        setCurrentPageNumber={setCurrentPage}
+        currentPageNumber={currentPageNumber}
+        setCurrentPageNumber={setCurrentPageNumber}
         selectedItemsIds={selectedItemsIds}
         setSelectedItemsIds={setSelectedItemsIds}
         numberOfItemsYetToBeAdded={numberOfItemsYetToBeAdded}
