@@ -1,7 +1,3 @@
-export type Cache = {
-  [key: number]: Root;
-};
-
 export type SelectedId = DataItem["id"];
 
 // APIs Types Start

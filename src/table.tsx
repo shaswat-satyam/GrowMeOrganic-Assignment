@@ -64,10 +64,9 @@ export default function Table({
   return (
     <>
       <DataTable
-        // Table to hold the data with all the relevant columns
         value={dataItemsInTableBody}
         stripedRows
-        tableStyle={{ maxWidth: "100%" }}
+        tableStyle={{ maxWidth: "100%", tableLayout: "fixed" }}
         selection={dataItemsInTableBody.filter((item) =>
           selectedItemsIds.includes(item.id),
         )}
@@ -93,28 +92,59 @@ export default function Table({
               dataItemsInTableBody={dataItemsInTableBody}
             />
           }
+          style={{ width: "50px" }} // Small width for selection checkbox
         />
         <Column
-          style={{ fontWeight: "bold", width: "25%" }}
           field="title"
           header="TITLE"
-        ></Column>
-        <Column field="place_of_origin" header="PLACE OF ORIGIN"></Column>
-        <Column style={{}} field="artist_display" header="ARTIST"></Column>
+          style={{ fontWeight: "bold", width: "25%", padding: "8px" }}
+          bodyStyle={{ whiteSpace: "normal", wordWrap: "break-word" }}
+        />
         <Column
-          // To Give a default placeholder when no data is Available.
-          body={(row) =>
-            typeof row.inscriptions == "string" ? (
-              <div>{row.inscriptions}</div>
-            ) : (
-              <div>N/A</div>
-            )
-          }
+          field="place_of_origin"
+          header="PLACE OF ORIGIN"
+          style={{ width: "15%", padding: "8px" }}
+        />
+        <Column
+          field="artist_display"
+          header="ARTIST"
+          style={{ width: "220px", padding: "8px" }}
+          bodyStyle={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        />
+        <Column
           field="inscriptions"
           header="INSCRIPTIONS"
-        ></Column>
-        <Column field="date_start" header="START DATE"></Column>
-        <Column field="date_end" header="END DATE"></Column>
+          body={(row) =>
+            typeof row.inscriptions === "string" ? (
+              <div
+                style={{
+                  whiteSpace: "normal",
+                  wordWrap: "break-word",
+                  padding: "8px",
+                }}
+              >
+                {row.inscriptions}
+              </div>
+            ) : (
+              <div style={{ padding: "8px" }}>N/A</div>
+            )
+          }
+          style={{ width: "20%" }}
+        />
+        <Column
+          field="date_start"
+          header="START DATE"
+          style={{ width: "10%", padding: "8px", textAlign: "center" }}
+        />
+        <Column
+          field="date_end"
+          header="END DATE"
+          style={{ width: "10%", padding: "8px", textAlign: "center" }}
+        />
       </DataTable>
     </>
   );

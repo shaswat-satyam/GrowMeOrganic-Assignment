@@ -5,8 +5,7 @@ import { useState, useEffect } from "react";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 import Table from "./table.tsx";
-
-import type { Cache, Root, SelectedId } from "../types.ts";
+import type { Root, SelectedId } from "../types.ts";
 
 function App() {
   // State to manage the Current Page Data from API
@@ -27,24 +26,15 @@ function App() {
     `https://api.artic.edu/api/v1/artworks?page=${page}`;
 
   // To fetch data for every page change.
-  const [cache, setCache] = useState<Cache>({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        if (Object.hasOwn(cache, currentPageNumber)) {
-          setData(cache[currentPageNumber]);
-        } else {
-          const res = await fetch(API(currentPageNumber));
-          if (!res.ok) throw new Error("Request failed");
-          const data = await res.json();
-          setCache((prevCache) => ({
-            ...prevCache,
-            [currentPageNumber]: data,
-          }));
-          setData(data);
-        }
+        const res = await fetch(API(currentPageNumber));
+        if (!res.ok) throw new Error("Request failed");
+        const data = await res.json();
+        setData(data);
       } catch (err) {
         console.error(err);
         setError(true);

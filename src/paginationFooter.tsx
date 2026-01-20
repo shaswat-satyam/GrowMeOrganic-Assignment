@@ -22,7 +22,7 @@ export default function PaginationFooter({
         <b>{paginationData.limit * paginationData.current_page}</b> of{" "}
         <b>{paginationData.total}</b> entries
       </p>
-      <div>
+      <div style={{ display: "flex", gap: "5px" }}>
         <Button
           size="small"
           outlined={true}
