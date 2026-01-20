@@ -1,3 +1,5 @@
+export type SelectedId = DataItem["id"];
+
 export type Pagination = {
   total: number;
   limit: number;

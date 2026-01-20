@@ -3,9 +3,9 @@ import type { Dispatch, SetStateAction } from "react";
 
 interface GroupButtonInterface {
   index: number;
-  currentPage: number;
-  lastPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
+  currentPageNumber: number;
+  lastPageNumber: number;
+  setCurrentPageNumber: Dispatch<SetStateAction<number>>;
 }
 
 const getLabel = (currentPage: number, index: number, lastPage: number) => {
@@ -26,16 +26,18 @@ const isOutlined = (currentPage: number, index: number, lastPage: number) => {
 
 export default function GroupButton({
   index,
-  currentPage,
-  lastPage,
-  setCurrentPage,
+  currentPageNumber,
+  lastPageNumber,
+  setCurrentPageNumber,
 }: GroupButtonInterface) {
   return (
     <Button
       size="small"
-      label={getLabel(currentPage, index, lastPage).toString()}
-      outlined={isOutlined(currentPage, index, lastPage)}
-      onClick={(_) => setCurrentPage(getLabel(currentPage, index, lastPage))}
+      label={getLabel(currentPageNumber, index, lastPageNumber).toString()}
+      outlined={isOutlined(currentPageNumber, index, lastPageNumber)}
+      onClick={(_) =>
+        setCurrentPageNumber(getLabel(currentPageNumber, index, lastPageNumber))
+      }
     />
   );
 }

@@ -2,83 +2,95 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useEffect } from "react";
 
-import Footer from "./footer.tsx";
-import Header from "./header.tsx";
+import Overlay from "./header.tsx";
+import PaginationFooter from "./footer.tsx";
 
 import type { Pagination, DataItem } from "../types.ts";
 import type { Dispatch, SetStateAction } from "react";
 
 interface TableProps {
-  body: DataItem[];
-  footer: Pagination;
-  currentPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
-  selectedItems: DataItem[];
-  setSelectedItems: Dispatch<SetStateAction<DataItem[]>>;
-  toBeAdded: number;
-  setToBeAdded: Dispatch<SetStateAction<number>>;
+  dataItemsInTableBody: DataItem[];
+  PaginationData: Pagination;
+  currentPageNumber: number;
+  setCurrentPageNumber: Dispatch<SetStateAction<number>>;
+  selectedItemsIds: DataItem["id"][];
+  setSelectedItemsIds: Dispatch<SetStateAction<DataItem["id"][]>>;
+  numberOfItemsYetToBeAdded: number;
+  setNumberOfItemsYetToBeAdded: Dispatch<SetStateAction<number>>;
 }
 
-const ItemsNotSelect = (selectedItems: DataItem[], AllItems: DataItem[]) => {
-  const selectedItemSet = new Set(selectedItems.map((item) => item.id));
-  return AllItems.filter((item) => !selectedItemSet.has(item.id));
+const ItemsNotSelect = (
+  selectedItemsIds: DataItem["id"][],
+  AllItems: DataItem[],
+) => {
+  const selectedItemsIdset = new Set(selectedItemsIds);
+  return AllItems.filter((item) => !selectedItemsIdset.has(item.id)).map(
+    (item) => item.id,
+  );
 };
 
 export default function Table({
-  body,
-  footer,
-  currentPage,
-  setCurrentPage,
-  selectedItems,
-  setSelectedItems,
-  toBeAdded,
-  setToBeAdded,
+  dataItemsInTableBody,
+  PaginationData,
+  currentPageNumber,
+  setCurrentPageNumber,
+  selectedItemsIds,
+  setSelectedItemsIds,
+  numberOfItemsYetToBeAdded,
+  setNumberOfItemsYetToBeAdded,
 }: TableProps) {
-  // Use Effect to reconcile tobeAdded Items
+  // Use Effect to reconcile numberOfItemsYetToBeAdded Items
   useEffect(() => {
-    if (toBeAdded > 0) {
-      let ItemsNotSelected = ItemsNotSelect(selectedItems, body);
-      if (toBeAdded >= ItemsNotSelected.length) {
-        setToBeAdded(toBeAdded - ItemsNotSelected.length);
-        setSelectedItems([...selectedItems, ...ItemsNotSelected]);
+    if (numberOfItemsYetToBeAdded > 0) {
+      let ItemsNotSelected = ItemsNotSelect(
+        selectedItemsIds,
+        dataItemsInTableBody,
+      );
+      if (numberOfItemsYetToBeAdded >= ItemsNotSelected.length) {
+        setNumberOfItemsYetToBeAdded(
+          numberOfItemsYetToBeAdded - ItemsNotSelected.length,
+        );
+        setSelectedItemsIds([...selectedItemsIds, ...ItemsNotSelected]);
       } else {
-        setSelectedItems([
-          ...selectedItems,
-          ...ItemsNotSelected.slice(0, toBeAdded),
+        setSelectedItemsIds([
+          ...selectedItemsIds,
+          ...ItemsNotSelected.slice(0, numberOfItemsYetToBeAdded),
         ]);
-        setToBeAdded(0);
+        setNumberOfItemsYetToBeAdded(0);
       }
     }
-  }, [body]);
+  }, [dataItemsInTableBody]);
 
   return (
     <>
       <DataTable
         // Table to hold the data with all the relevant columns
-        value={body}
+        value={dataItemsInTableBody}
         stripedRows
         tableStyle={{ maxWidth: "100%" }}
-        selection={selectedItems}
+        selection={dataItemsInTableBody.filter((item) =>
+          selectedItemsIds.includes(item.id),
+        )}
         selectionMode="multiple"
-        onSelectionChange={(e) => setSelectedItems(e.value)}
+        onSelectionChange={(e) => setSelectedItemsIds(e.value.map((e) => e.id))}
         dataKey="id"
         footer={
-          <Footer
-            footer={footer}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+          <PaginationFooter
+            paginationData={PaginationData}
+            currentPageNumber={currentPageNumber}
+            setCurrentPageNumber={setCurrentPageNumber}
           />
         }
       >
         <Column
           selectionMode="multiple"
           header={
-            <Header
-              selectedItems={selectedItems}
-              setSelectedItems={setSelectedItems}
-              toBeAdded={toBeAdded}
-              setToBeAdded={setToBeAdded}
-              body={body}
+            <Overlay
+              selectedItemsIds={selectedItemsIds}
+              setSelectedItemsIds={setSelectedItemsIds}
+              numberOfItemsYetToBeAdded={numberOfItemsYetToBeAdded}
+              setNumberOfItemsYetToBeAdded={setNumberOfItemsYetToBeAdded}
+              dataItemsInTableBody={dataItemsInTableBody}
             />
           }
         />

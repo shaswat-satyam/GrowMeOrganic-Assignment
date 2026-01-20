@@ -6,7 +6,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 
 import Table from "./table.tsx";
 
-import type { DataItem, Root } from "../types.ts";
+import type { DataItem, Root, SelectedId } from "../types.ts";
 
 function App() {
   // State to manage the Current Page Data from API
@@ -19,8 +19,9 @@ function App() {
   const [isLoading, setLoading] = useState<Boolean>(true);
 
   // State to handle selected Items and toBeAdded items.
-  const [selectedItems, setSelectedItems] = useState<DataItem[]>([]);
-  const [toBeAdded, setToBeAdded] = useState<number>(0);
+  const [selectedItemsIds, setSelectedItemsIds] = useState<SelectedId[]>([]);
+  const [numberOfItemsYetToBeAdded, setNumberOfItemsYetToBeAdded] =
+    useState<number>(0);
 
   const API = (page: number) =>
     `https://api.artic.edu/api/v1/artworks?page=${page}`;
@@ -58,17 +59,18 @@ function App() {
   return (
     <>
       <div>
-        Selected: <b>{selectedItems.length + toBeAdded}</b> rows
+        Selected: <b>{selectedItemsIds.length + numberOfItemsYetToBeAdded}</b>{" "}
+        rows
       </div>
       <Table
-        body={data.data}
-        footer={data.pagination}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        selectedItems={selectedItems}
-        setSelectedItems={setSelectedItems}
-        toBeAdded={toBeAdded}
-        setToBeAdded={setToBeAdded}
+        dataItemsInTableBody={data.data}
+        PaginationData={data.pagination}
+        currentPageNumber={currentPage}
+        setCurrentPageNumber={setCurrentPage}
+        selectedItemsIds={selectedItemsIds}
+        setSelectedItemsIds={setSelectedItemsIds}
+        numberOfItemsYetToBeAdded={numberOfItemsYetToBeAdded}
+        setNumberOfItemsYetToBeAdded={setNumberOfItemsYetToBeAdded}
       />
     </>
   );
